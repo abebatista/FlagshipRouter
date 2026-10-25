@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.0 — 2026-10-25
+
+### Changed
+- Routing engine update: OpenCode Free reasoning fixes (GLM 5.3 Flash, DeepSeek V4.1 Flash, MiMo V2.6 Flash), combos move to the next model on request-scoped 4xx, credit/balance errors and empty streams, streamed tool calls always carry an id, SQLite writes strip NUL bytes, and `undici` 7.30.1.
+
 ## 1.2.0 — 2026-10-25
 
 ### Added
