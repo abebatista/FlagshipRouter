@@ -102,7 +102,10 @@ describe("free-only provider policy", () => {
 });
 
 describe("public model renames", () => {
-  const rename = () => BRAND_JSON.models.renames[0];
+  const rename = () => {
+    const raw = BRAND_JSON.models.renames[0];
+    return { ...raw, target: raw.target || raw.targets[0] };
+  };
 
   it("resolves the public id, display name and prefixed form to the upstream target", () => {
     const { id, name, target } = rename();
@@ -160,18 +163,51 @@ describe("public model renames", () => {
     expect(text).toContain("event: message_start");
   });
 
+  it("keeps every pool target in order, with target as the first", () => {
+    for (const raw of BRAND_JSON.models.renames) {
+      const r = renames.findModelRename(raw.id);
+      expect(r.targets).toEqual(raw.targets || [raw.target]);
+      expect(r.target).toBe(r.targets[0]);
+      for (const t of r.targets) expect(policy.isProviderAllowed(t.split("/")[0]), t).toBe(true);
+    }
+  });
+
+  it("replaces upstream limit errors with a branded message", async () => {
+    const r = renames.findModelRename(rename().id);
+    const upstream = { error: { message: "[429]: FreeUsageLimitError: subscribe to Upstream Go to keep going", type: "rate_limit_error" } };
+    const res = await renames.presentResponseAsModel(
+      new Response(JSON.stringify(upstream), { status: 429, headers: { "content-type": "application/json" } }), r, rename().id,
+    );
+    expect(res.status).toBe(429);
+    const out = await res.json();
+    expect(out.error.type).toBe("rate_limit_error");
+    expect(out.error.message).toContain(rename().name);
+    expect(out.error.message).toContain(brand.BRAND.name);
+    expect(out.error.message).not.toContain("Upstream Go");
+  });
+
+  it("scrubs every pool target from error bodies", async () => {
+    const r = renames.findModelRename(rename().id);
+    const text = r.targets.map((t) => `[${t}] failed`).join("; ");
+    const res = await renames.presentResponseAsModel(
+      new Response(JSON.stringify({ error: { message: text } }), { status: 503, headers: { "content-type": "application/json" } }), r, rename().id,
+    );
+    const body = await res.text();
+    for (const t of r.targets) expect(body).not.toContain(t);
+  });
+
   it("scrubs the upstream model from error bodies", async () => {
     const r = renames.findModelRename(rename().id);
     const target = rename().target;
     const res = await renames.presentResponseAsModel(
-      new Response(JSON.stringify({ error: { message: `[${target}] rate limited` } }), {
-        status: 429,
+      new Response(JSON.stringify({ error: { message: `[${target}] unavailable` } }), {
+        status: 503,
         headers: { "content-type": "application/json" },
       }),
       r,
       rename().id,
     );
-    expect(res.status).toBe(429);
+    expect(res.status).toBe(503);
     const text = await res.text();
     expect(text).not.toContain(target);
     expect(text).toContain(rename().id);

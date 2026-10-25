@@ -14,10 +14,10 @@
   "updateCheck": false,
 
   "models": {
-    "_comment": "Public model renames. Clients list and call `id` (or `name`); the router calls `target` (provider-alias/model) behind the scenes and reports `id` back in every response. hideTarget keeps the upstream model out of /v1/models and the dashboard catalog.",
+    "_comment": "Public model renames. Clients list and call `id` (or `name`); the router calls `targets` (provider-alias/model) in order behind the scenes — when one is at its free limit or not connected, the next answers — and reports `id` back in every response. hideTarget keeps the first target out of /v1/models and the dashboard catalog.",
     "renames": [
-      { "id": "gpt-6-astra", "name": "GPT-6 Astra", "target": "oc/big-pickle", "hideTarget": true },
-      { "id": "claude-opus-5.5", "name": "Claude Opus 5.5", "target": "oc/big-pickle", "hideTarget": true }
+      { "id": "gpt-6-astra", "name": "GPT-6 Astra", "targets": ["oc/big-pickle", "groq/openai/gpt-oss-120b", "openrouter/openrouter/free"], "hideTarget": true },
+      { "id": "code-5.5", "name": "Code 5.5", "targets": ["oc/big-pickle", "groq/openai/gpt-oss-120b", "openrouter/openrouter/free"], "hideTarget": true }
     ]
   },
 
