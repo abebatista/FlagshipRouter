@@ -3,6 +3,8 @@
 ## 1.3.0 — 2026-10-25
 
 ### Changed
+- GPT-6 Astra and Claude Opus 5.5 are backed by OpenCode Free models only: Big Pickle first, then DeepSeek V4.1 Flash, GLM 5.3 Flash, MiMo V2.6 Flash and the two Nemotron 3.5 models when one is unavailable. All of them stay hidden from model lists.
+- The free-limit message no longer points to other providers.
 - Routing engine update: OpenCode Free reasoning fixes (GLM 5.3 Flash, DeepSeek V4.1 Flash, MiMo V2.6 Flash), combos move to the next model on request-scoped 4xx, credit/balance errors and empty streams, streamed tool calls always carry an id, SQLite writes strip NUL bytes, and `undici` 7.30.1.
 
 ## 1.2.0 — 2026-10-25

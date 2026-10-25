@@ -192,8 +192,8 @@ export async function handleChat(request, clientRawRequest = null) {
 
 /**
  * Handle single model chat request. A public model rename (brand.json → models.renames)
- * is routed to its upstream targets in order — the next one answers when one is at its
- * limit or not connected — and the response is presented under the public name.
+ * is routed to its upstream targets in order — the next one answers when one is
+ * unavailable — and the response is presented under the public name.
  */
 async function handleSingleModelChat(body, modelStr, clientRawRequest = null, request = null, apiKey = null, requestedModel = null) {
   const rename = findModelRename(modelStr);

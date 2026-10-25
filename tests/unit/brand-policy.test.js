@@ -172,6 +172,13 @@ describe("public model renames", () => {
     }
   });
 
+  it("hides every pool target from listings", () => {
+    for (const t of renames.findModelRename(rename().id).targets) {
+      const [alias, model] = t.split(/\/(.*)/s);
+      expect(renames.isHiddenRenameTarget(alias, model), t).toBe(true);
+    }
+  });
+
   it("replaces upstream limit errors with a branded message", async () => {
     const r = renames.findModelRename(rename().id);
     const upstream = { error: { message: "[429]: FreeUsageLimitError: subscribe to Upstream Go to keep going", type: "rate_limit_error" } };
@@ -182,7 +189,6 @@ describe("public model renames", () => {
     const out = await res.json();
     expect(out.error.type).toBe("rate_limit_error");
     expect(out.error.message).toContain(rename().name);
-    expect(out.error.message).toContain(brand.BRAND.name);
     expect(out.error.message).not.toContain("Upstream Go");
   });
 
