@@ -3,11 +3,11 @@
 ## 1.2.0 — 2026-10-25
 
 ### Added
-- GPT-6 Astra and Code 5.5 are each backed by several free models (`targets` in `brand.json`). When one is at its free limit or not connected, the next one answers. Connect a free Groq or OpenRouter key in the dashboard to add capacity.
+- GPT-6 Astra and Claude Opus 5.5 are each backed by several free models (`targets` in `brand.json`). When one is at its free limit or not connected, the next one answers. Connect a free Groq or OpenRouter key in the dashboard to add capacity.
 
 ### Changed
 - When every model behind a public model is at its limit, clients get a clear "free usage limit reached" message instead of the raw upstream error.
-- The second public model is "Code 5.5" (`code-5.5`).
+- The second public model is "Claude Opus 5.5" (`claude-opus-5.5`).
 
 ## 1.1.0 — 2026-10-20
 

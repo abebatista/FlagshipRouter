@@ -4,7 +4,6 @@
 
 - **Free providers only.** The dashboard, management APIs and routing only expose providers with a free offer (Kiro, OpenCode Free, OpenRouter free models, NVIDIA NIM, Groq, Cloudflare Workers AI, Ollama, self-hosted servers and more).
 - **A Models screen instead of a provider list.** Every model from every free provider in one searchable table, with a ready/connect status and a one-click test.
-- **One place to rename.** Product name, CLI command, data folder, the prefix your tools show on models, and the provider policy all live in [`brand.json`](brand.json).
 - **Starts with one command.** Running `flagshiprouter` starts the server and opens the browser UI.
 
 ## Quick start
