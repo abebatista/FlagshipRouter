@@ -16,7 +16,7 @@ cd FlagshipRouter
 npm run launch
 ```
 
-`npm run launch` installs the dependencies, builds the app (a few minutes, first run only), and starts the CLI. The server runs on port `20128` and the dashboard opens in your browser; the terminal keeps a small menu (open browser UI, terminal UI, hide to tray, exit). Later runs start in seconds and rebuild automatically when the sources or `brand.json` change.
+`npm run launch` installs the dependencies, builds the app (a few minutes, first run only), and starts the CLI. The server runs on port `20128` and the dashboard opens in your browser; the terminal keeps a small menu (open browser UI, terminal UI, hide to tray, exit).
 
 Pass CLI options after `--`, for example `npm run launch -- --host 127.0.0.1` (local only), `-- -p 20130` (another port) or `-- --no-browser`.
 
@@ -47,20 +47,6 @@ curl http://localhost:20128/v1/chat/completions \
   -d '{"model": "gpt-6-astra", "messages": [{"role": "user", "content": "Hello"}]}'
 ```
 
-## Rename everything from `brand.json`
-
-| Field | Controls |
-| --- | --- |
-| `name` | Product name in the dashboard, terminal UI, tray, page titles, translations |
-| `slug` | npm package, CLI command, data folder (`~/.<slug>`), headers, MITM certificate names |
-| `modelPrefix` | Provider key written into CLI tool configs, so models show as `<modelPrefix>/<model>` |
-| `tagline`, `description` | Page title, web app manifest |
-| `repository`, `branch` | Links, changelog and agent-skill URLs |
-| `updateCheck` | npm update notices (keep `false` until the package is published under `slug`) |
-| `providers` | Free-provider policy (see below) |
-
-After editing `brand.json`, run `npm run brand:sync` to update the two `package.json` files (package name, CLI bin). Everything else reads `brand.json` at runtime or build time.
-
 
 ## Free-provider policy
 
@@ -85,8 +71,6 @@ Endpoint & Key · Models · Combos & Vision · Token Saver · CLI Tools · Media
 
 | Path | What it is |
 | --- | --- |
-| `brand.json` | Single source for brand and provider policy |
-| `open-sse/` | Routing and translation engine (`config/brand.js`, `providers/policy.js`) |
 | `src/app/` | Next.js dashboard and API routes (`/v1/*` gateway, `/api/models/catalog` for the Models screen) |
 | `cli/` | The `flagshiprouter` launcher: starts the server, opens the browser UI, terminal UI, tray |
 | `tests/` | Vitest suite (`tests/unit/brand-policy.test.js` covers the brand layer) |
